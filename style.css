@@ -1,0 +1,46 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-color: rgb(152, 219, 245);
+    height: 100%;
+}
+
+.calculator-container {
+    height: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator {
+    height: 500px;
+    width: 500px;
+    background-color: rgb(54, 53, 53);
+}
+
+.display {
+    height: 20%;
+    background-color: rgb(163, 162, 162);
+    margin: 3%;
+    padding: 2%;
+    border-radius: 25px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.row {
+    height: 15%;
+    display: flex;
+    gap: 5%;
+    justify-content: center;
+}
+
+.row button {
+    margin: 1%;
+    width: 10%;
+    font-size: 20px;
+}
