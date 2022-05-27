@@ -21,16 +21,37 @@ body {
 }
 
 .display {
+    position: relative;
     height: 20%;
     background-color: rgb(163, 162, 162);
     margin: 3%;
-    padding: 2%;
+    /* padding: 2%; */
     border-radius: 25px;
     font-size: 25px;
     display: flex;
     align-items: center;
     justify-content: right;
 }
+
+.secondary-display {
+    position: absolute;
+    top: 5%;
+    height: 20%;
+    margin-top: 1%;
+    font-size: 18px;
+}
+
+.primary-display {
+    font-size: 30px;
+}
+
+.secondary-display,
+.primary-display {
+    margin-right: 10%;
+}
+
+
+
 
 .row {
     height: 15%;

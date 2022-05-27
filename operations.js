@@ -1,18 +1,18 @@
 
 function add(a, b) {
-    display.textContent = a+b;
+    primaryDisplay.textContent = a+b;
 }
 
 function substract(a, b) {
-    display.textContent = a-b;
+    primaryDisplay.textContent = a-b;
 }
 
 function multiple(a, b) {
-    display.textContent =  a*b;
+    primaryDisplay.textContent =  a*b;
 }
 function divide(a, b) {
-    if(b == 0) display.textContent = -1;
-    else display.textContent = a/b;
+    if(b == 0) primaryDisplay.textContent = -1;
+    else primaryDisplay.textContent = a/b;
 }
 
 function operate() {
@@ -33,19 +33,26 @@ function operate() {
     const equals = document.querySelector('.equal');
     equals.removeEventListener('click', operate);
     operatorPressed = false;
+    justEqueled = true;
     secondNumber = "";
-    initialNumber = display.textContent;
+    initialNumber = primaryDisplay.textContent;
 }
 
 function joinNumber(num) {
     const value = num.target.textContent;
-    if(!operatorPressed) {
+    if(!operatorPressed && !justEqueled) {
         initialNumber += value;
-        display.textContent = initialNumber;
+        primaryDisplay.textContent = initialNumber;
+    }
+    else if(!operatorPressed && justEqueled) {
+        secondaryDisplay.textContent = initialNumber;
+        initialNumber = value;
+        primaryDisplay.textContent = initialNumber;
+        justEqueled = false;
     }
     else {
         secondNumber += value;
-        display.textContent = secondNumber;
+        primaryDisplay.textContent = operatorValue + " " + secondNumber;
     }
 }
 
@@ -53,6 +60,8 @@ function setOperator(operator) {
     if(operatorPressed == true || initialNumber == "") return;
     operatorValue = operator.target.textContent;
     operatorPressed = true;
+    primaryDisplay.textContent = operatorValue;
+    secondaryDisplay.textContent = initialNumber;
 
     const equals = document.querySelector('.equal');
     equals.addEventListener('click', operate);
@@ -72,10 +81,12 @@ function setEventListeners() {
 
 }
 
-const display = document.querySelector('.display');
+const primaryDisplay = document.querySelector('.primary-display');
+const secondaryDisplay = document.querySelector('.secondary-display');
 let initialNumber = "";
 let secondNumber = "";
 let operatorValue = "";
 let operatorPressed = false;
+let justEqueled = false;
 
 setEventListeners();
