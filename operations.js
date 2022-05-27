@@ -1,4 +1,3 @@
-
 function add(a, b) {
     primaryDisplay.textContent = a+b;
 }
@@ -68,6 +67,16 @@ function setOperator(operator) {
 
 }
 
+function resetCalculator() {
+    primaryDisplay.textContent = "";
+    secondaryDisplay.textContent = "";
+    initialNumber = "";
+    secondNumber = "";
+    operatorValue = "";
+    operatorPressed = false;
+    justEqueled = false;
+}
+
 function setEventListeners() {
     const numbers = document.querySelectorAll('.number');
     numbers.forEach((num) => {
@@ -78,6 +87,9 @@ function setEventListeners() {
     operations.forEach((operation) => {
         operation.addEventListener('click', setOperator);
     })
+    
+    const resetButton = document.querySelector('.reset');
+    resetButton.addEventListener('click', resetCalculator);
 
 }
 
