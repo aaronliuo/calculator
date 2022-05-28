@@ -10,11 +10,12 @@ function multiple(a, b) {
     primaryDisplay.textContent =  a*b;
 }
 function divide(a, b) {
-    if(b == 0) primaryDisplay.textContent = -1;
+    if(b == 0) primaryDisplay.textContent = 0;
     else primaryDisplay.textContent = a/b;
 }
 
 function operate() {
+    if(!operatorPressed || initialNumber.length == 0 || secondNumber.length == 0) return;
     const a = Number(initialNumber);
     const b = Number(secondNumber);
     if(operatorValue == '+') {
@@ -29,8 +30,6 @@ function operate() {
     else {
         divide(a, b);
     }
-    const equals = document.querySelector('.equal');
-    equals.removeEventListener('click', operate);
     operatorPressed = false;
     justEqueled = true;
     secondNumber = "";
@@ -56,15 +55,15 @@ function joinNumber(num) {
 }
 
 function setOperator(operator) {
-    if(operatorPressed == true || initialNumber == "") return;
+    if(operatorPressed == true && initialNumber == "") return;
+    if(operatorPressed) {
+        operate();
+    }
     operatorValue = operator.target.textContent;
     operatorPressed = true;
+    justEqueled = false;
     primaryDisplay.textContent = operatorValue;
     secondaryDisplay.textContent = initialNumber;
-
-    const equals = document.querySelector('.equal');
-    equals.addEventListener('click', operate);
-
 }
 
 function resetCalculator() {
@@ -78,11 +77,22 @@ function resetCalculator() {
 }
 
 function delNumber() {
-    let currNumber = primaryDisplay.textContent;
+    //Cannot delete result number and cannot delete when there is nothing.
+    if(justEqueled || primaryDisplay.textContent.length == 0) return;
+
+    //get current value that is being deleted
+    let currNumber;
+    if(!operatorPressed) {
+        currNumber = initialNumber;
+    }
+    else {
+        currNumber = secondNumber;
+    }
+    //delete operator if it is the only thing left.
     if(currNumber.length == 0 && operatorPressed) {
         operatorValue = "";
         operatorPressed = false;
-        console.log("EXEcUTED");
+        primaryDisplay.textContent = "";
         return;
     }
 
@@ -95,15 +105,14 @@ function delNumber() {
     }
 
     //update information
-    primaryDisplay.textContent = currNumber;
     if(!operatorPressed) {
+        primaryDisplay.textContent = currNumber;
         initialNumber = currNumber;
     }
     else {
+        primaryDisplay.textContent = operatorValue + " " + currNumber;
         secondNumber = currNumber;
     }
-    console.log(currNumber);
-    console.log(operatorValue);
 }
 
 function setEventListeners() {
@@ -122,6 +131,9 @@ function setEventListeners() {
 
     const delButton = document.querySelector('.delete');
     delButton.addEventListener('click', delNumber);
+
+    const equals = document.querySelector('.equal');
+    equals.addEventListener('click', operate);
 }
 
 const primaryDisplay = document.querySelector('.primary-display');
