@@ -77,6 +77,35 @@ function resetCalculator() {
     justEqueled = false;
 }
 
+function delNumber() {
+    let currNumber = primaryDisplay.textContent;
+    if(currNumber.length == 0 && operatorPressed) {
+        operatorValue = "";
+        operatorPressed = false;
+        console.log("EXEcUTED");
+        return;
+    }
+
+    //Removes last character and tailing negative/decimal signs
+    if(currNumber.length > 0) {
+        currNumber = currNumber.slice(0, -1);
+    }
+    if(currNumber.length > 0 && (currNumber[currNumber.length-1] == '-' || currNumber[currNumber.length-1] == '.')) {
+        currNumber = currNumber.slice(0, -1);
+    }
+
+    //update information
+    primaryDisplay.textContent = currNumber;
+    if(!operatorPressed) {
+        initialNumber = currNumber;
+    }
+    else {
+        secondNumber = currNumber;
+    }
+    console.log(currNumber);
+    console.log(operatorValue);
+}
+
 function setEventListeners() {
     const numbers = document.querySelectorAll('.number');
     numbers.forEach((num) => {
@@ -91,6 +120,8 @@ function setEventListeners() {
     const resetButton = document.querySelector('.reset');
     resetButton.addEventListener('click', resetCalculator);
 
+    const delButton = document.querySelector('.delete');
+    delButton.addEventListener('click', delNumber);
 }
 
 const primaryDisplay = document.querySelector('.primary-display');
