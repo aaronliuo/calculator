@@ -1,21 +1,26 @@
 function add(a, b) {
-    primaryDisplay.textContent = a+b;
+    initialNumber = "" + a+b;
 }
-
 function substract(a, b) {
-    primaryDisplay.textContent = a-b;
+    initialNumber = "" + a-b;
 }
-
 function multiple(a, b) {
-    primaryDisplay.textContent =  a*b;
+    initialNumber =  "" + a*b;
 }
 function divide(a, b) {
-    if(b == 0) primaryDisplay.textContent = 0;
-    else primaryDisplay.textContent = a/b;
+    if(b == 0) initialNumber = "0";
+    else initialNumber = "" + a/b;
+}
+function modular(a, b) {
+    if(b == 0) initialNumber = "0";
+    else  initialNumber = "" + a%b;
 }
 
 function operate() {
+    //conditions to operate
     if(!operatorPressed || initialNumber.length == 0 || secondNumber.length == 0) return;
+    if(secondNumber.length == 1 && secondNumber[0] == '-') return;
+    
     const a = Number(initialNumber);
     const b = Number(secondNumber);
     if(operatorValue == '+') {
@@ -27,43 +32,54 @@ function operate() {
     else if(operatorValue == '*') {
         multiple(a, b);
     }
-    else {
+    else if(operatorValue == '/') {
         divide(a, b);
     }
+    else {
+        modular(a, b);
+    }
     operatorPressed = false;
-    justEqueled = true;
+    secondaryDisplay.textContent = initialNumber;
+    primaryDisplay.textContent = "";
     secondNumber = "";
-    initialNumber = primaryDisplay.textContent;
 }
 
-function joinNumber(num) {
-    const value = num.target.textContent;
-    if(!operatorPressed && !justEqueled) {
-        initialNumber += value;
-        primaryDisplay.textContent = initialNumber;
-    }
-    else if(!operatorPressed && justEqueled) {
-        secondaryDisplay.textContent = initialNumber;
-        initialNumber = value;
-        primaryDisplay.textContent = initialNumber;
-        justEqueled = false;
+function updatePrimaryDisplay() {
+    if(!operatorPressed) {
+        primaryDisplay.textContent = secondNumber;
     }
     else {
-        secondNumber += value;
         primaryDisplay.textContent = operatorValue + " " + secondNumber;
     }
 }
 
+function joinNumber(num) {
+    const value = num.target.textContent;
+    if(!operatorPressed) {
+        secondNumber += value;
+    }
+    else {
+        secondNumber += value;
+    }
+    updatePrimaryDisplay();
+}
+
 function setOperator(operator) {
-    if(operatorPressed == true && initialNumber == "") return;
+    // condition where operator cannot be inputted into calc
+    if(secondNumber.length == 1 && secondNumber[0] == '-') return;
+
     if(operatorPressed) {
         operate();
     }
     operatorValue = operator.target.textContent;
     operatorPressed = true;
-    justEqueled = false;
     primaryDisplay.textContent = operatorValue;
-    secondaryDisplay.textContent = initialNumber;
+    //Only update secondary display and initialNumber if it wasn't done through operate.
+    if(secondNumber.length != 0) {
+        secondaryDisplay.textContent = secondNumber;
+        initialNumber = secondNumber;
+    }
+    secondNumber = "";
 }
 
 function resetCalculator() {
@@ -73,21 +89,15 @@ function resetCalculator() {
     secondNumber = "";
     operatorValue = "";
     operatorPressed = false;
-    justEqueled = false;
 }
 
 function delNumber() {
     //Cannot delete result number and cannot delete when there is nothing.
-    if(justEqueled || primaryDisplay.textContent.length == 0) return;
+    if(primaryDisplay.textContent.length == 0) return;
 
     //get current value that is being deleted
-    let currNumber;
-    if(!operatorPressed) {
-        currNumber = initialNumber;
-    }
-    else {
-        currNumber = secondNumber;
-    }
+    let currNumber = secondNumber;
+
     //delete operator if it is the only thing left.
     if(currNumber.length == 0 && operatorPressed) {
         operatorValue = "";
@@ -105,14 +115,18 @@ function delNumber() {
     }
 
     //update information
-    if(!operatorPressed) {
-        primaryDisplay.textContent = currNumber;
-        initialNumber = currNumber;
+    secondNumber = currNumber;
+    updatePrimaryDisplay();
+}
+
+function changeSign() {
+    if(secondNumber[0] == '-') {
+        secondNumber = secondNumber.slice(1);
     }
     else {
-        primaryDisplay.textContent = operatorValue + " " + currNumber;
-        secondNumber = currNumber;
+        secondNumber = '-' + secondNumber;
     }
+    updatePrimaryDisplay();
 }
 
 function setEventListeners() {
@@ -134,6 +148,9 @@ function setEventListeners() {
 
     const equals = document.querySelector('.equal');
     equals.addEventListener('click', operate);
+
+    const signButton = document.querySelector('.flip-sign');
+    signButton.addEventListener('click', changeSign);
 }
 
 const primaryDisplay = document.querySelector('.primary-display');
@@ -142,6 +159,5 @@ let initialNumber = "";
 let secondNumber = "";
 let operatorValue = "";
 let operatorPressed = false;
-let justEqueled = false;
 
 setEventListeners();
