@@ -54,6 +54,12 @@ function updatePrimaryDisplay() {
 }
 
 function joinNumber(num) {
+    //prevents user from entering more then characters.
+    if(primaryDisplay.textContent.length >= 20) {
+        alert("Cannot add more!");
+        return;
+    }
+
     const value = num.target.textContent;
     if(!operatorPressed) {
         secondNumber += value;
