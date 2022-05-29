@@ -19,7 +19,7 @@ function modular(a, b) {
 function operate() {
     //conditions to operate
     if(!operatorPressed || initialNumber.length == 0 || secondNumber.length == 0) return;
-    if(secondNumber.length == 1 && secondNumber[0] == '-') return;
+    if(secondNumber == '-' || secondNumber == '.') return;
     
     const a = Number(initialNumber);
     const b = Number(secondNumber);
@@ -66,8 +66,7 @@ function joinNumber(num) {
 
 function setOperator(operator) {
     // condition where operator cannot be inputted into calc
-    if(secondNumber.length == 1 && secondNumber[0] == '-') return;
-
+    if(secondNumber == '-' || secondNumber == '.' || secondNumber == '-.') return;
     if(operatorPressed) {
         operate();
     }
@@ -110,9 +109,6 @@ function delNumber() {
     if(currNumber.length > 0) {
         currNumber = currNumber.slice(0, -1);
     }
-    if(currNumber.length > 0 && (currNumber[currNumber.length-1] == '-' || currNumber[currNumber.length-1] == '.')) {
-        currNumber = currNumber.slice(0, -1);
-    }
 
     //update information
     secondNumber = currNumber;
@@ -126,6 +122,16 @@ function changeSign() {
     else {
         secondNumber = '-' + secondNumber;
     }
+    updatePrimaryDisplay();
+}
+
+function addDecimal() {
+    for(let i=0; i<secondNumber.length; i++) {
+        if(secondNumber[i] == '.') {
+            return;
+        }
+    }
+    secondNumber = secondNumber + '.';
     updatePrimaryDisplay();
 }
 
@@ -151,6 +157,9 @@ function setEventListeners() {
 
     const signButton = document.querySelector('.flip-sign');
     signButton.addEventListener('click', changeSign);
+
+    const decimalButton = document.querySelector('.decimal');
+    decimalButton.addEventListener('click', addDecimal);
 }
 
 const primaryDisplay = document.querySelector('.primary-display');
