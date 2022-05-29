@@ -19,7 +19,7 @@ function modular(a, b) {
 function operate() {
     //conditions to operate
     if(!operatorPressed || initialNumber.length == 0 || secondNumber.length == 0) return;
-    if(secondNumber == '-' || secondNumber == '.') return;
+    if(secondNumber == '-' || secondNumber == '.' || secondNumber == '-.') return;
     
     const a = Number(initialNumber);
     const b = Number(secondNumber);
