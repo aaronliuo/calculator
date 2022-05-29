@@ -67,6 +67,8 @@ function joinNumber(num) {
 function setOperator(operator) {
     // condition where operator cannot be inputted into calc
     if(secondNumber == '-' || secondNumber == '.' || secondNumber == '-.') return;
+    if(secondNumber.length == 0 && secondaryDisplay.textContent.length == 0) return;
+
     if(operatorPressed) {
         operate();
     }
