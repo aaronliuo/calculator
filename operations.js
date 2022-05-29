@@ -1,19 +1,19 @@
 function add(a, b) {
-    initialNumber = "" + a+b;
+    initialNumber = "" + (a+b);
 }
 function substract(a, b) {
-    initialNumber = "" + a-b;
+    initialNumber = "" + (a-b);
 }
 function multiple(a, b) {
-    initialNumber =  "" + a*b;
+    initialNumber =  "" + (a*b);
 }
 function divide(a, b) {
     if(b == 0) initialNumber = "0";
-    else initialNumber = "" + a/b;
+    else initialNumber = "" + (a/b);
 }
 function modular(a, b) {
     if(b == 0) initialNumber = "0";
-    else  initialNumber = "" + a%b;
+    else  initialNumber = "" + (a%b);
 }
 
 function operate() {
